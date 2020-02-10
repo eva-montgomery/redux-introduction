@@ -1,23 +1,20 @@
-// console.log('it is working')
+// console.log('it is working. i am a robot')
 
-// // "The bank" - state
-// // Describe the ideal version of state
-
+// "The bank" - state
+// Describe the ideal version of state
 // {
-//     amount: 100 
+//     amount: 100
 // }
 
 // // if we added 1 to the amount, what would state look like?
-
 // {
 //     amount: 101
 // }
 
 
 // // "A transaction slip" - action
-
 // {
-//     type: 'INCREMENT'
+//     type: 'INCREMENT'    
 // }
 
 // {
@@ -36,101 +33,132 @@
 //     amounts: [1]
 // }
 
-
 // {
 //     type: INCREMENT,
-//     id: 0
+//     id: 0    
+// }
+
+// { 
+//     amounts: [54, 22, 10, 87] 
+// }
+
+// { 
+//     amounts: [54, 10, 87] 
 // }
 
 
-import {
+// {
+//     type: 'DEL_COUNTER'
+//     id: 1
+// }
+
+
+
+import { 
     createStore
 } from 'redux';
+// "The teller" - reducer function
+// reducers are always named for the state they manage.
+// They always receive the current state and the action
+// they're processing.
+const defaultState = { amounts: [43, 19, 84, 10, 3] };
+
+// CREATE
+const ADD_COUNTER = 'ADD_COUNTER';
+
+// UPDATE
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+
+// DELETE
+const DEL_COUNTER = 'DEL_COUNTER';
 
 
-// Create your action types as constants so that you get error messages for typos.
-// const INCREMENT = 'INCREMENT';
-// const DECREMENT = 'DECREMENT';
+function counter(state=defaultState, action) {
+    console.log('Somebody called counter()');
+    const newState = { ...state };
+    
+    switch(action.type) {
+        case INCREMENT:
+            newState.amounts[action.id] = state.amounts[action.id] + 1;
+            break;
+        case DECREMENT:
+            newState.amounts[action.id] = state.amounts[action.id] - 1;
+            break;
+        case ADD_COUNTER:
+            newState.amounts.push(0);
+            break;
+        case DEL_COUNTER:
+            newState.amounts.splice(action.id, 1);
+            break;
+        default:
+            break;
+    }
+    return newState;
+}
 
-// write action creator functions.
-// They format your action objects
-// Again, to avoid typos.
+// You give it a reducer, it gives you a "store".
+// The store is an object that manages your state 
+// using your reducer.
+const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+// "Push notifications" - subscribe to changes in the store
+store.subscribe(() => {
+    console.log(`The state is now:`);
+    // console.table();
+    console.table(store.getState());
+});
+
 
 function actionIncrement(id) {
     return {
-        type: 'INCREMENT',
+        type: INCREMENT,
         id
     }
 }
 
 function actionDecrement(id) {
     return {
-        type: 'DECREMENT',
+        type: DECREMENT,
         id
     }
 }
 
-// "The teller" - reducer function
-// reducers are always named for the state they manage
-// They always receive the currect state and the action they're processing
-const defaultState = { amounts: [0, 0, 0, 0, 0] }
-
-function counter(state=defaultState, action) {
-    console.log('somebody called counter()')
-    const newState = {...state};
-
-    if (action.type === 'INCREMENT') {
-        newState.amounts[action.id] = state.amounts[action.id] + 1;
-    } else if (action.type === 'DECREMENT') {
-        newState.amounts[action.id] = state.amounts[action.id] - 1;
-    } else {
-        // no neeed to do anything
-        // we already made a copy of thate to return
+function actionAddCounter() {
+    return {
+        type: ADD_COUNTER
     }
-    // They *must* return the new version of state.
-    return newState;
 }
 
-// You give it a reducer, it gives you back a "store".
-// The store is an object that manages your store using reducer
-const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-// "Push notifications" - subscribe to changes in the store
-store.subscribe(() => {
-    console.log(`The state is now:`);
-    // console.table(store.getState());
-    console.table(store.getState());
-});
+function actionDelCounter(id) {
+    return {
+        type: DEL_COUNTER,
+        id
+    }
+}
 
-// Let's give the store some actions to process
-store.dispatch(actionIncrement(0));
-store.dispatch(actionIncrement(0));
-store.dispatch(actionIncrement(7));
-store.dispatch(actionIncrement(10));
-store.dispatch(actionDecrement(4));
-
-
-
-// store.dispatch({
-//     type: 'INCREMENT',
-//     id: 0
-// })
-
-// store.dispatch({
-//     type: '⛷',
-//     id: 0
-// });
-
-// store.dispatch({
-//     type: 'INCREMENT',
-//     id: 0
-// });
-
-// store.dispatch({
-//     type: 'DECREMENT',
-//     id: 0
-// });
+store.dispatch(actionAddCounter())
+store.dispatch(actionDelCounter(3));
+store.dispatch(actionDelCounter(0));
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
+// store.dispatch(actionAddCounter())
 
 
+// Let's give the store some actions to process.
+// store.dispatch(actionIncrement(0));
+// store.dispatch(actionIncrement(0));
+// store.dispatch(actionIncrement(0));
+// store.dispatch(actionIncrement(2));
+// store.dispatch(actionIncrement(2));
+// store.dispatch(actionDecrement(0));
+// store.dispatch(actionDecrement(1));
+// store.dispatch(actionDecrement(4));
 
 
 // import React from 'react';
