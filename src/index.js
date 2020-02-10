@@ -58,19 +58,25 @@ function actionDecrement(howMuch=1) {
 
 
 // Question1 #1: How would you handle state with 2 different amounts?
-// {
-//         amount1: 101,
-//         amount2: 3
-// }
 
-
-function actionMulti(howMuch=1) {
-    return {
-            amount1: 101,
-            amount2: 3
-    }
+// state version 1
+{
+    amount1: 101,
+    amount2: 3
 }
 
+// state version 2
+{
+    amount1: 101,
+    amount2: 4
+}
+
+// example action
+{
+    type: 'INCREMENT',
+    amount: 1,
+    amountId: 'amount2'
+}
 
 // Question #2: How would you handle state so you could add and remove amounts,
 // where each amount can be incremented and decremented?
