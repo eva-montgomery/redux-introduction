@@ -28,6 +28,20 @@
 //     type: '🏄'
 // }
 
+// {
+//     amounts: [0]
+// }
+
+// {
+//     amounts: [1]
+// }
+
+
+// {
+//     type: INCREMENT,
+//     id: 0
+// }
+
 
 import {
     createStore
@@ -35,63 +49,51 @@ import {
 
 
 // Create your action types as constants so that you get error messages for typos.
-const INCREMENT = 'INCREMENT';
-const DECREMENT = 'DECREMENT';
+// const INCREMENT = 'INCREMENT';
+// const DECREMENT = 'DECREMENT';
 
 // write action creator functions.
 // They format your action objects
 // Again, to avoid typos.
 
-function actionIncrement(howMuch=1) {
+function actionIncrement(id) {
     return {
-        type: INCREMENT,
-        amount: howMuch
+        type: 'INCREMENT',
+        id
     }
 }
 
-function actionDecrement(howMuch=1) {
+function actionDecrement(id) {
     return {
-        type: DECREMENT,
-        amount: howMuch
+        type: 'DECREMENT',
+        id
     }
 }
 
 // "The teller" - reducer function
 // reducers are always named for the state they manage
 // They always receive the currect state and the action they're processing
-const defaultState = { amount: 100 }
+const defaultState = { amounts: [0, 0, 0, 0, 0] }
 
 function counter(state=defaultState, action) {
     console.log('somebody called counter()')
     const newState = {...state};
 
-    switch(action.type) {
-        case INCREMENT:
-            newState.amount = state.amount + action.amount;
-            break;
-        case DECREMENT:
-            newState.amount = state.amount - action.amount;
-            break;
-        default:
-            break;
+    if (action.type === 'INCREMENT') {
+        newState.amounts[action.id] = state.amounts[action.id] + 1;
+    } else if (action.type === 'DECREMENT') {
+        newState.amounts[action.id] = state.amounts[action.id] - 1;
+    } else {
+        // no neeed to do anything
+        // we already made a copy of thate to return
     }
-
-
-    // if (action.type === 'INCREMENT') {
-    //     newState.amount = state.amount + action.amount;
-    // } else if (action.type === 'DECREMENT') {
-    //  newState.amount = state.amount - action.amount;
-    // } else {
-    //     // no neeed to do anything
-    //     // we already made a copy of thate to return
-    // }
     // They *must* return the new version of state.
     return newState;
 }
 
 // You give it a reducer, it gives you back a "store".
 // The store is an object that manages your store using reducer
-const store = createStore(counter);
+const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 // "Push notifications" - subscribe to changes in the store
 store.subscribe(() => {
     console.log(`The state is now:`);
@@ -100,30 +102,32 @@ store.subscribe(() => {
 });
 
 // Let's give the store some actions to process
-store.dispatch(actionIncrement());
-store.dispatch(actionDecrement());
+store.dispatch(actionIncrement(0));
+store.dispatch(actionIncrement(0));
+store.dispatch(actionIncrement(7));
+store.dispatch(actionIncrement(10));
+store.dispatch(actionDecrement(4));
 
-
-store.dispatch(actionIncrement(5));
-store.dispatch(actionDecrement(99));
- 
 
 
 // store.dispatch({
 //     type: 'INCREMENT',
-//     amount: 'garbage'
+//     id: 0
 // })
 
 // store.dispatch({
-//     type: '⛷'
+//     type: '⛷',
+//     id: 0
 // });
 
 // store.dispatch({
-//     type: 'INCREMENT'
+//     type: 'INCREMENT',
+//     id: 0
 // });
 
 // store.dispatch({
-//     type: 'DECREMENT'
+//     type: 'DECREMENT',
+//     id: 0
 // });
 
 
