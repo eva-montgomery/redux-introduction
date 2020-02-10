@@ -56,6 +56,27 @@ function actionDecrement(howMuch=1) {
     }
 }
 
+
+// Question1 #1: How would you handle state with 2 different amounts?
+// {
+//         amount1: 101,
+//         amount2: 3
+// }
+
+
+function actionMulti(howMuch=1) {
+    return {
+            amount1: 101,
+            amount2: 3
+    }
+}
+
+
+// Question #2: How would you handle state so you could add and remove amounts,
+// where each amount can be incremented and decremented?
+// const ADD_COUNTER = 'ADD_COUNTER';
+// const DEL_COUNTER = 'DEL_COUNTER';
+
 // "The teller" - reducer function
 // reducers are always named for the state they manage
 // They always receive the currect state and the action they're processing
@@ -107,7 +128,7 @@ store.dispatch(actionDecrement());
 store.dispatch(actionIncrement(5));
 store.dispatch(actionDecrement(99));
  
-
+store.dispatch(actionMulti());
 
 // store.dispatch({
 //     type: 'INCREMENT',
@@ -125,6 +146,15 @@ store.dispatch(actionDecrement(99));
 // store.dispatch({
 //     type: 'DECREMENT'
 // });
+
+
+
+
+
+
+
+
+
 
 
 
