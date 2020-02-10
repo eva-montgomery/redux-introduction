@@ -42,41 +42,41 @@ const DECREMENT = 'DECREMENT';
 // They format your action objects
 // Again, to avoid typos.
 
-function actionIncrement(howMuch=1) {
-    return {
-        type: INCREMENT,
-        amount: howMuch
-    }
-}
+// function actionIncrement(howMuch=1) {
+//     return {
+//         type: INCREMENT,
+//         amount: howMuch
+//     }
+// }
 
-function actionDecrement(howMuch=1) {
-    return {
-        type: DECREMENT,
-        amount: howMuch
-    }
-}
+// function actionDecrement(howMuch=1) {
+//     return {
+//         type: DECREMENT,
+//         amount: howMuch
+//     }
+// }
 
 
 // Question1 #1: How would you handle state with 2 different amounts?
 
 // state version 1
-{
-    amount1: 101,
-    amount2: 3
-}
+// {
+//     amount1: 101,
+//     amount2: 3
+// }
 
 // state version 2
-{
-    amount1: 101,
-    amount2: 4
-}
+// {
+//     amount1: 101,
+//     amount2: 4
+// }
 
 // example action
-{
-    type: 'INCREMENT',
-    amount: 1,
-    amountId: 'amount2'
-}
+// {
+//     type: 'INCREMENT',
+//     amount: 1,
+//     amountId: 'amount2'
+// }
 
 // Question #2: How would you handle state so you could add and remove amounts,
 // where each amount can be incremented and decremented?
@@ -86,7 +86,10 @@ function actionDecrement(howMuch=1) {
 // "The teller" - reducer function
 // reducers are always named for the state they manage
 // They always receive the currect state and the action they're processing
-const defaultState = { amount: 100 }
+const defaultState = { 
+    amount1: 100,
+    amount2: 3
+};
 
 function counter(state=defaultState, action) {
     console.log('somebody called counter()')
@@ -94,10 +97,10 @@ function counter(state=defaultState, action) {
 
     switch(action.type) {
         case INCREMENT:
-            newState.amount = state.amount + action.amount;
+            newState[action.amountId] = state[action.amountId] + action.amount;
             break;
         case DECREMENT:
-            newState.amount = state.amount - action.amount;
+            newState[action.amountId] = state[action.amountId] - action.amount;
             break;
         default:
             break;
@@ -118,7 +121,7 @@ function counter(state=defaultState, action) {
 
 // You give it a reducer, it gives you back a "store".
 // The store is an object that manages your store using reducer
-const store = createStore(counter);
+const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 // "Push notifications" - subscribe to changes in the store
 store.subscribe(() => {
     console.log(`The state is now:`);
@@ -127,14 +130,31 @@ store.subscribe(() => {
 });
 
 // Let's give the store some actions to process
-store.dispatch(actionIncrement());
-store.dispatch(actionDecrement());
+store.dispatch({
+    type: 'INCREMENT',
+    amount: 1,
+    amountId: 'amount2'
+});
+
+store.dispatch({
+    type: 'INCREMENT',
+    amount: 10,
+    amountId: 'amount2'
+});
+
+store.dispatch({
+    type: 'INCREMENT',
+    amount: 10,
+    amountId: 'amount2'
+});
+
+// store.dispatch(actionIncrement());
+// store.dispatch(actionDecrement());
 
 
-store.dispatch(actionIncrement(5));
-store.dispatch(actionDecrement(99));
+// store.dispatch(actionIncrement(5));
+// store.dispatch(actionDecrement(99));
  
-store.dispatch(actionMulti());
 
 // store.dispatch({
 //     type: 'INCREMENT',
